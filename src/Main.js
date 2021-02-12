@@ -19,8 +19,16 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import { 
+        ExpandLess, 
+        ExpandMore, 
+        StarBorder,
+    } from '@material-ui/icons';
+import Collapse from '@material-ui/core/Collapse';
 
-const drawerWidth = 220;
+
+const drawerWidth = 300;
 
 const styles = theme => ({
   root: {
@@ -95,13 +103,18 @@ const styles = theme => ({
   },
   grow: {
     flexGrow: 1
-  }
+  },
+  nested: {
+    paddingLeft: theme.spacing(5),
+  },
 });
+
 
 class MiniDrawer extends React.Component {
   state = {
-    open: false,
-    anchorEl: null
+    open: true,
+    anchorEl: null,
+    openListItem: false
   };
 
   handleDrawerOpen = () => {
@@ -118,11 +131,17 @@ class MiniDrawer extends React.Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
+  
 
   render() {
     const { classes } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
+
+    const handleClick = () => {
+        this.setState({ openListItem: !this.state.openListItem });
+    }
+
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -154,7 +173,7 @@ class MiniDrawer extends React.Component {
               className={classes.grow}
               noWrap
             >
-              Mini variant menu++
+              {/* Mini variant menu++ */}
             </Typography>
             <div>
               <IconButton
@@ -185,6 +204,7 @@ class MiniDrawer extends React.Component {
             </div>
           </Toolbar>
         </AppBar>
+
         <Drawer
           variant="permanent"
           className={classNames(classes.drawer, {
@@ -201,14 +221,31 @@ class MiniDrawer extends React.Component {
         >
           <div className={classes.toolbar} />
           <List>
-            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
+              <ListItem button onClick={handleClick}>
+                  <ListItemIcon>
+                    <InboxIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Consultas" />
+                    {this.state.openListItem ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
-            ))}
+              <Collapse in={this.state.openListItem} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                    <ListItem button className={classes.nested}>
+                        <ListItemIcon>
+                            <StarBorder />
+                        </ListItemIcon>
+                            <ListItemText primary="Módulo 1" />
+                    </ListItem>
+                </List>
+                <List component="div" disablePadding>
+                    <ListItem button className={classes.nested}>
+                        <ListItemIcon>
+                            <FavoriteBorderIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Módulo 2" />
+                    </ListItem>
+                </List>
+            </Collapse>
           </List>
           <Divider />
           <List>
@@ -226,19 +263,7 @@ class MiniDrawer extends React.Component {
           <div className={classes.toolbar} />
 
           <Typography paragraph>
-            Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-            ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-            elementum integer enim neque volutpat ac tincidunt. Ornare
-            suspendisse sed nisi lacus sed viverra tellus. Purus sit amet
-            volutpat consequat mauris. Elementum eu facilisis sed odio morbi.
-            Euismod lacinia at quis risus sed vulputate odio. Morbi tincidunt
-            ornare massa eget egestas purus viverra accumsan in. In hendrerit
-            gravida rutrum quisque non tellus orci ac. Pellentesque nec nam
-            aliquam sem et tortor. Habitant morbi tristique senectus et.
-            Adipiscing elit duis tristique sollicitudin nibh sit. Ornare aenean
-            euismod elementum nisi quis eleifend. Commodo viverra maecenas
-            accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam
-            ultrices sagittis orci a.
+            <b>Teste</b>
           </Typography>
           <Typography paragraph>foo</Typography>
         </main>
